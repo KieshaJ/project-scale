@@ -1,8 +1,8 @@
-package com.kj.userservice.services;
+package com.kj.authservice.services;
 
-import com.kj.userservice.models.User;
-import com.kj.userservice.repositories.UserRepository;
-import com.kj.userservice.utils.enums.UserRole;
+import com.kj.authservice.models.User;
+import com.kj.authservice.repositories.UserRepository;
+import com.kj.authservice.utils.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,38 +10,32 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-public class MongoUserService implements UserDetailsService {
-//    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final UserRepository userRepository;
-
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    public MongoUserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    BCryptPasswordEncoder encoder;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepository.findByUsername(username);
-//
-//        if(user == null) {
-//            throw new UsernameNotFoundException("User not found");
-//        }
-//
-//        List<GrantedAuthority> authorityList = getAuthorityList(user.getRoles());
-//
-//        return buildUserForAuthentication(user, authorityList);
-        return null;
+        User user = userRepository.findByUsername(username);
+
+        if(user == null) {
+            throw new UsernameNotFoundException("No such user exists");
+        }
+
+        List<GrantedAuthority> authorityList = getAuthorityList(user.getRoles());
+
+        return buildUserForAuthentication(user, authorityList);
     }
 
-
-    // TODO make utils or nah idk
+    // TODO Probably needs common service
     private List<GrantedAuthority> getAuthorityList(List<UserRole> roleList) {
         return roleList.stream().map(role -> new SimpleGrantedAuthority(role.name())).collect(Collectors.toList());
     }

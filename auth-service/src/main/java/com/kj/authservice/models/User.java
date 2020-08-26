@@ -1,6 +1,6 @@
-package com.kj.userservice.models;
+package com.kj.authservice.models;
 
-import com.kj.userservice.utils.enums.UserRole;
+import com.kj.authservice.utils.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +16,6 @@ import java.util.List;
 @Document
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class User {
     @Id
     private ObjectId id;

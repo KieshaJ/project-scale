@@ -1,4 +1,4 @@
-package com.kj.userservice.utils.enums;
+package com.kj.authservice.utils.enums;
 
 public enum UserRole {
     USER, ADMIN

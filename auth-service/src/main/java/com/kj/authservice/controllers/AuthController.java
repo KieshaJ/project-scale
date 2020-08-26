@@ -1,5 +1,7 @@
 package com.kj.authservice.controllers;
 
+import com.kj.authservice.models.User;
+import com.kj.authservice.repositories.UserRepository;
 import com.kj.userservice.services.MongoUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,8 @@ public class AuthController {
 //    @Autowired
 //    AuthenticationManager authenticationManager;
 
-//    @Autowired
-//    JwtTokenProvider jwtTokenProvider;
-//
-//    @Autowired
-//    UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
 //    @Autowired
 //    MongoUserService mongoUserService;
@@ -40,18 +39,18 @@ public class AuthController {
 //        return ResponseEntity.ok(model);
 //    }
 //
-//    @PostMapping("/register")
-//    public ResponseEntity<Map<Object, Object>> register(@RequestBody User user) {
-//        User existingUser = userRepository.findByUsername(user.getUsername());
-//
-//        if(existingUser != null) {
-//            throw new BadCredentialsException("User with this username already exists");
-//        }
-//
-//        userRepository.save(user);
-//
-//        Map<Object, Object> model = new HashMap<>();
-//        model.put("message", "User registered successfully");
-//        return ResponseEntity.ok(model);
-//    }
+    @PostMapping("/register")
+    public ResponseEntity<Map<Object, Object>> register(@RequestBody User user) {
+        User existingUser = userRepository.findByUsername(user.getUsername());
+
+        if(existingUser != null) {
+            throw new BadCredentialsException("User with this username already exists");
+        }
+
+        userRepository.save(user);
+
+        Map<Object, Object> model = new HashMap<>();
+        model.put("message", "User registered successfully");
+        return ResponseEntity.ok(model);
+    }
 }
